@@ -1,0 +1,56 @@
+Mutable recursions
+
+Controls:
+	- Move the mouse to spin the cubes.
+	- Mouse click to switch to a new layout.
+
+Author:
+  Jason Labbe
+
+Site:
+  jasonlabbe3d.com
+*/
+
+final public int minRegionSize = 50;
+final public int minBlockSize = 10;
+final public int maxBlockSize = 20;
+
+private ArrayList<Cube> cubes = new ArrayList<Cube>();
+private float maxCubeSize;
+private float minCubeSize;
+private float cubeSizeMult = 0.5;
+
+void setup() {
+	let dimension = min(min(window.innerWidth, window.innerHeight), 600);
+	size(dimension, dimension, P3D);
+	ortho(-width / 2, width / 2, -height / 2, height / 2, 0.01, 10000);
+	
+	colorMode(HSB, 255);
+	
+	minCubeSize = width;
+	while(minCubeSize > minRegionSize) {
+		minCubeSize /= 2;
+	}
+	
+	maxCubeSize = width / 2.0 * cubeSizeMult;
+	
+	reset();
+}
+
+void draw() {
+	background(0);
+	
+	for (int i = 0; i < cubes.size(); i++) {
+		cubes.get(i).display();
+	}
+}
+
+void reset() {
+	cubes.clear();
+	Region mainRegion = new Region(0, 0, width, height);
+	mainRegion.subdivide(true);
+}
+
+void mouseClicked() {
+	reset();
+}
